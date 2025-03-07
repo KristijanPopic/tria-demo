@@ -1,17 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using TriaDemo.Repository;
+using TriaDemo.Api.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-
-builder.Services.AddDbContext<TriaDemoDbContext>(opt =>
-    opt.UseNpgsql(
-        builder.Configuration.GetConnectionString("BloggingContext"),
-        o => o
-            .SetPostgresVersion(17, 4)
-        ));
+builder.Services.AddTriaDemoServices(builder.Configuration);
 
 var app = builder.Build();
 
