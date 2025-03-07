@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TriaDemo.Api.Controllers;
+namespace TriaDemo.RestApi.Controllers;
 
 [ApiController]
 [Route("api/notifications")]

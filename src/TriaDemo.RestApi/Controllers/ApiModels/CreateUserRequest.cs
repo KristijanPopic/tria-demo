@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TriaDemo.Api.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.ApiModels;
 
 public sealed class CreateUserRequest
 {

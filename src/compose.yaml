@@ -3,7 +3,6 @@
     image: triademo.api
     build:
       context: .
-      dockerfile: TriaDemo.Api/Dockerfile
     ports:
       - 5000:8080
     depends_on:

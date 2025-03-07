@@ -1,4 +1,4 @@
-namespace TriaDemo.Api.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.ApiModels;
 
 public class CreateUserResponse
 {

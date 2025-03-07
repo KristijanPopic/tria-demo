@@ -1,7 +1,7 @@
 using TriaDemo.Repository.DependencyInjection;
 using TriaDemo.Service.DependencyInjection;
 
-namespace TriaDemo.Api.DependencyInjection;
+namespace TriaDemo.RestApi.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {

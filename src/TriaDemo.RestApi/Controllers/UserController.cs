@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using TriaDemo.Api.Controllers.ApiModels;
+using TriaDemo.RestApi.Controllers.ApiModels;
 
-namespace TriaDemo.Api.Controllers;
+namespace TriaDemo.RestApi.Controllers;
 
 [ApiController]
 [Route("api/users")]

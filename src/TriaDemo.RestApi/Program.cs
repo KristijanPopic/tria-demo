@@ -1,4 +1,4 @@
-using TriaDemo.Api.DependencyInjection;
+using TriaDemo.RestApi.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
