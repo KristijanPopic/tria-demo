@@ -1,6 +1,6 @@
 ﻿services:
-  triademo.api:
-    image: triademo.api
+  restapi:
+    image: triademo-restapi
     build:
       context: .
     ports:
@@ -16,9 +16,5 @@
       POSTGRES_PASSWORD: mystrongpassword
       POSTGRES_USER: postgres
       POSTGRES_DB: postgresserver
-    
-  adminer:
-    image: adminer
-    restart: always
     ports:
-      - 5001:8080
+      - 5432:5432
