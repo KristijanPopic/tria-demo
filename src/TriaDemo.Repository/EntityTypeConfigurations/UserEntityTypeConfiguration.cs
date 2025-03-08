@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Repository.Entities.Configurations;
+namespace TriaDemo.Repository.EntityTypeConfigurations;
 
 internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {
@@ -20,7 +20,7 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
         
-        builder.Property(p => p.Username)
+        builder.Property(p => p.Email)
             .IsRequired()
             .HasMaxLength(100);
         

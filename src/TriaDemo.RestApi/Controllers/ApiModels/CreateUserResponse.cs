@@ -1,12 +1,25 @@
+using TriaDemo.Service.Models;
+
 namespace TriaDemo.RestApi.Controllers.ApiModels;
 
-public class CreateUserResponse
+public sealed class CreateUserResponse
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
     
-    public string Username { get; set; }
+    public required string Email { get; set; }
 
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
 
-    public string LastName { get; set; }
+    public required string LastName { get; set; }
+
+    public static CreateUserResponse FromUser(User user)
+    {
+        return new CreateUserResponse
+        {
+            Id = user.Id,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+        };
+    }
 }

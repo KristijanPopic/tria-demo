@@ -1,14 +1,14 @@
 ﻿services:
-  restapi:
+  triademo.restapi:
     image: triademo-restapi
     build:
       context: .
     ports:
       - 5000:8080
     depends_on:
-      - db
+      - triademo.database
   
-  db:
+  triademo.database:
     image: postgres:17.4
     restart: always
     shm_size: 128mb
