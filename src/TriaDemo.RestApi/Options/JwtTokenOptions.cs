@@ -4,9 +4,9 @@ public sealed class JwtTokenOptions
 {
     public const string SectionName = "JwtToken";
 
-    public required string Audience { get; init; }
+    public string? Audience { get; set; }
 
-    public required string Issuer { get; init; }
+    public string? Issuer { get; set; }
     
-    public required string SecretKey { get; init; }
+    public string? SecretKey { get; set; }
 }

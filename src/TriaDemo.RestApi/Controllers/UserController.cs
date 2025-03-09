@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -83,7 +82,7 @@ public class UserController(IUserService userService) : ApiControllerBase
         }
         
         var token = tokenGenerator.GenerateToken(user);
-        return Ok(token);
+        return Ok(new UserLoginResponse { AccessToken = token });
     }
 
     private ObjectResult UnauthorizedProblem(string title, string detail)

@@ -13,7 +13,7 @@ internal sealed class UserService(
     {
         var existingUser = await userRepository.GetUserByEmailAsync(user.Email, token);
 
-        if (existingUser != null)
+        if (existingUser is not null)
         {
             throw new ValueNotUniqueException("User with the given email already exists.");
         }

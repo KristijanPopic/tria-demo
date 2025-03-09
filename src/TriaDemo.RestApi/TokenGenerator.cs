@@ -15,7 +15,7 @@ public sealed class TokenGenerator(IOptions<JwtTokenOptions> options)
     public string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_tokenOptions.SecretKey);
+        var key = Encoding.UTF8.GetBytes(_tokenOptions.SecretKey!);
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
