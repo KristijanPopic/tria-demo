@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using TriaDemo.Repository;
 using TriaDemo.RestApi.DependencyInjection;
 using TriaDemo.RestApi.Exceptions;
@@ -8,33 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    option =>
-    {
-        option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-        {
-            In = ParameterLocation.Header,
-            Description = "Please enter a valid token",
-            Name = "Authorization",
-            Type = SecuritySchemeType.Http,
-            BearerFormat = "JWT",
-            Scheme = "Bearer"
-        });
-        option.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type=ReferenceType.SecurityScheme,
-                        Id="Bearer"
-                    }
-                },
-                []
-            }
-        });
-    });
+builder.Services.AddSwagger();
 
 builder.Services.AddProblemDetails(o =>
     o.CustomizeProblemDetails = context =>
@@ -59,8 +32,12 @@ app.UseSwaggerUI(
 );
 app.UseExceptionHandler();
 app.UseStatusCodePages();
+
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 using (var serviceScope = app.Services.CreateScope())
