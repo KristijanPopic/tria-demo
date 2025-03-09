@@ -9,11 +9,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddRepositoryLayer(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<TriaDemoDbContext>(opt =>
-            opt.UseNpgsql(
-                connectionString,
-                o => o
-                    .SetPostgresVersion(17, 4)
-            ));
+            opt.UseNpgsql(connectionString));
 
         services.AddScoped<IUserRepository, UserRepository>();
         
