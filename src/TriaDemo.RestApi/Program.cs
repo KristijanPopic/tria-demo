@@ -14,6 +14,7 @@ builder.Services.AddProblemDetails(o =>
         context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
     });
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddValidators();
 builder.Services.AddTriaDemoServices(builder.Configuration);
 
 var app = builder.Build();
