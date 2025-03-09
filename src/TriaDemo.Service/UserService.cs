@@ -25,4 +25,9 @@ internal sealed class UserService(
         
         return await userRepository.CreateAsync(user, token);
     }
+
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default)
+    {
+        return await userRepository.GetUserByEmailAsync(email, token);
+    }
 }
