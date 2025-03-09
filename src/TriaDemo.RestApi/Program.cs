@@ -6,7 +6,8 @@ using TriaDemo.RestApi.Exceptions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddProblemDetails(o =>
     o.CustomizeProblemDetails = context =>
     {
@@ -17,11 +18,11 @@ builder.Services.AddTriaDemoServices(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapOpenApi();
+app.UseSwagger();
 app.UseSwaggerUI(
     o =>
     {
-        o.SwaggerEndpoint("/openapi/v1.json", "Tria Demo API");
+        o.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     }
 );
 app.UseExceptionHandler();
@@ -41,7 +42,7 @@ return;
 static void InitializeDatabase(IServiceScope serviceScope)
 {
     using var dbContext = serviceScope.ServiceProvider.GetRequiredService<TriaDemoDbContext>();
-
+    
     var migrated = false;
     var retryCount = 0;
     // sometimes the SQL Server doesn't get available immediately when starting with Docker compose
@@ -53,7 +54,7 @@ static void InitializeDatabase(IServiceScope serviceScope)
             dbContext.Database.Migrate();
             migrated = true;
         }
-        catch(Exception ex)
+        catch
         {
             retryCount++;
             if (retryCount == 10) throw;
