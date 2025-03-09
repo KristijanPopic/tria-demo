@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
             opt.UseNpgsql(connectionString));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IGroupRepository, GroupRepository>();
         
         return services;
     }

@@ -17,4 +17,9 @@ internal sealed class UserRepository(TriaDemoDbContext dbContext) : IUserReposit
     {
         return await dbContext.Users.Where(u => u.Id == user.Id).ExecuteDeleteAsync(token) > 0;
     }
+
+    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default)
+    {
+        return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email, token);
+    }
 }

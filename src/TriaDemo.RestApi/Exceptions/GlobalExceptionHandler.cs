@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TriaDemo.Service.Exceptions;
 
 namespace TriaDemo.RestApi.Exceptions;
 
@@ -10,12 +11,16 @@ public sealed class GlobalExceptionHandler(IProblemDetailsService problemDetails
         httpContext.Response.StatusCode = exception switch
         {
             FluentValidation.ValidationException => StatusCodes.Status400BadRequest,
+            ValueNotUniqueException => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status500InternalServerError
         };
+        
+        var exceptionHandlerFeature = httpContext.Features.Get<IExceptionHandlerFeature>();
 
         return await problemDetailsService.TryWriteAsync(
             new ProblemDetailsContext
             {
+                AdditionalMetadata = exceptionHandlerFeature?.Endpoint?.Metadata,
                 HttpContext = httpContext,
                 Exception = exception,
                 ProblemDetails = new ProblemDetails

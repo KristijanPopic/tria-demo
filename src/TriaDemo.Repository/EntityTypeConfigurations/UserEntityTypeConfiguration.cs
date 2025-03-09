@@ -19,7 +19,7 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
         builder.Property(p => p.LastName)
             .IsRequired()
             .HasMaxLength(100);
-        
+
         builder.Property(p => p.Email)
             .IsRequired()
             .HasMaxLength(100);
@@ -30,6 +30,15 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder
             .HasMany(p => p.Groups)
-            .WithMany(p => p.Users);
+            .WithMany(p => p.Users)
+            .UsingEntity<UserGroup>(
+                r => r.HasOne(p => p.Group).WithMany().HasForeignKey(p => p.GroupId),
+                l => l.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId)
+            );
+        
+        builder.HasIndex(p => p.Email)
+            .IsUnique();
+        
+        builder.HasData(SeedData.Users);
     }
 }

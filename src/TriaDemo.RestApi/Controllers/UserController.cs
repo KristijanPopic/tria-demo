@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TriaDemo.RestApi.Controllers.ApiModels;
@@ -8,6 +9,7 @@ namespace TriaDemo.RestApi.Controllers;
 
 [ApiController]
 [Route("api/users")]
+[Produces(MediaTypeNames.Application.Json)]
 public class UserController(IUserService userService) : ControllerBase
 {
     /// <summary>
