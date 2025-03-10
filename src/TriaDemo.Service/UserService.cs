@@ -53,9 +53,14 @@ internal sealed class UserService(
     public async Task<User> UpdateUserAsync(User user, CancellationToken token = default)
     {
         await ThrowIfCurrentUserIsNotAdmin("User must be admin to update users.", token);
-        
+
         var groupNames = user.Groups.Select(g => g.GroupName).ToArray();
         var groups = await groupRepository.GetGroupsAsync(groupNames, token);
+        
+        if (groups.Count == 0)
+        {
+            throw new InvalidEntityException("User must be assigned to at least one group.");
+        }
 
         user.Groups = groups.ToList();
 

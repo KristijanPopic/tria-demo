@@ -9,5 +9,6 @@ internal sealed class UpdateUserRequestValidator : AbstractValidator<UpdateUserR
         RuleFor(u => u.Email).NotEmpty().EmailAddress();
         RuleFor(u => u.FirstName).NotEmpty();
         RuleFor(u => u.LastName).NotEmpty();
+        RuleFor(u => u.Groups).NotEmpty();
     }
 }

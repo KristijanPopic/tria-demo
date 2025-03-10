@@ -17,19 +17,19 @@ public static class ExceptionExtensions
                 Detail = "One or more validation errors occurred.",
                 Extensions = new Dictionary<string, object?> { ["errors"] = validationException.Errors }
             },
-            ValueNotUniqueException valueNotUniqueException => new ProblemDetails
-            {
-                Status = StatusCodes.Status409Conflict,
-                Type = "Conflict",
-                Title = "Value is already in use.",
-                Detail = valueNotUniqueException.Message
-            },
             UnauthorizedException unauthorizedException => new ProblemDetails
             {
                 Status = StatusCodes.Status403Forbidden,
                 Type = "Forbidden",
                 Title = "User is not authorized to perform this operation.",
                 Detail = unauthorizedException.Message
+            },
+            InvalidEntityException invalidEntityException => new ProblemDetails
+            {
+                Status = StatusCodes.Status422UnprocessableEntity,
+                Type = "Unprocessable Entity",
+                Title = "One or more property values are invalid.",
+                Detail = invalidEntityException.Message
             },
             _ => new ProblemDetails
             {

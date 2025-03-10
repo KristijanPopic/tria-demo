@@ -13,6 +13,8 @@ public sealed class CreateUserResponse
     public required string LastName { get; set; }
 
     public bool IsActive { get; set; }
+    
+    public required IEnumerable<string> Groups { get; set; }
 
     public static CreateUserResponse FromUser(User user)
     {
@@ -22,7 +24,8 @@ public sealed class CreateUserResponse
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            IsActive = user.IsActive
+            IsActive = user.IsActive,
+            Groups = user.Groups.Select(g => g.GroupName)
         };
     }
 }

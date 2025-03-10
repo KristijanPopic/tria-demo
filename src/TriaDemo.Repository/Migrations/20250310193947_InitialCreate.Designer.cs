@@ -12,7 +12,7 @@ using TriaDemo.Repository;
 namespace TriaDemo.Repository.Migrations
 {
     [DbContext(typeof(TriaDemoDbContext))]
-    [Migration("20250309161828_InitialCreate")]
+    [Migration("20250310193947_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

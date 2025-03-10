@@ -30,7 +30,7 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder
             .HasMany(p => p.Groups)
-            .WithMany(p => p.Users)
+            .WithMany()
             .UsingEntity<UserGroup>(
                 r => r.HasOne(p => p.Group).WithMany().HasForeignKey(p => p.GroupId),
                 l => l.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId)
