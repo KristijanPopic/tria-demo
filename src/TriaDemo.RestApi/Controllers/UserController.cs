@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TriaDemo.Common;
 using TriaDemo.RestApi.Controllers.ApiModels;
+using TriaDemo.RestApi.Users;
 using TriaDemo.Service;
 using TriaDemo.Service.Models;
 
@@ -46,6 +47,40 @@ public class UserController(IUserService userService) : ApiControllerBase
         var createdUser = await userService.CreateUserAsync(user, cancellationToken);
         
         return Ok(CreateUserResponse.FromUser(createdUser));
+    }
+    
+    /// <summary>
+    /// Gets the list of registered users.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [ProducesResponseType<IEnumerable<GetUserResponse>>(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<GetUserResponse>>> GetUsers(CancellationToken cancellationToken = default)
+    {
+        // this would have paging in real-world application
+        var users = await userService.GetUsersAsync(cancellationToken);
+        return Ok(users.Select(GetUserResponse.FromUser));
+    }
+    
+    /// <summary>
+    /// Gets a single user by its identifier.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<GetUserResponse>> GetUser(Guid id, CancellationToken cancellationToken = default)
+    {
+        // this would have paging in real-world application
+        var user = await userService.GetUserByIdAsync(id, cancellationToken);
+        if (user is null)
+        {
+            return NotFoundProblem(title: "User not found", detail: $"User with id {id} not found.");
+        }
+        return Ok(GetUserResponse.FromUser(user));
     }
 
     /// <summary>

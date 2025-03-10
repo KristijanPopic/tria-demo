@@ -27,4 +27,9 @@ internal sealed class UserRepository(TriaDemoDbContext dbContext) : IUserReposit
     {
         return await dbContext.Users.Include(u => u.Groups).SingleOrDefaultAsync(u => u.Id == id, token);
     }
+
+    public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default)
+    {
+        return await dbContext.Users.Include(u => u.Groups).ToListAsync(token);
+    }
 }

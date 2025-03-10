@@ -1,6 +1,6 @@
 using TriaDemo.Common;
 
-namespace TriaDemo.RestApi;
+namespace TriaDemo.RestApi.Users;
 
 public sealed class AnonymousUser : ICurrentUser
 {

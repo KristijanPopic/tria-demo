@@ -2,9 +2,9 @@ namespace TriaDemo.Common;
 
 public interface ICurrentUser
 {
-    public Guid UserId { get; }
+    Guid UserId { get; }
     
-    public string Email { get; }
+    string Email { get; }
 
-    public bool IsAuthenticated { get; }
+    bool IsAuthenticated { get; }
 }

@@ -54,4 +54,9 @@ internal sealed class UserService(
     {
         return await userRepository.GetUserByIdAsync(id, token);
     }
+
+    public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default)
+    {
+        return await userRepository.GetUsersAsync(token);
+    }
 }

@@ -11,4 +11,6 @@ public interface IUserService
     Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default);
     
     Task<User?> GetUserByIdAsync(Guid id, CancellationToken token = default);
+    
+    Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default);
 }
