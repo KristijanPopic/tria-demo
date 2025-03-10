@@ -6,15 +6,16 @@ using TriaDemo.RestApi.Exceptions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails(o =>
     o.CustomizeProblemDetails = context =>
     {
         context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
     });
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddJwtBearerAuthentication(builder.Configuration);

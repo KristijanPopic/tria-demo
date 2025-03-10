@@ -1,8 +1,10 @@
+using System.Security.Claims;
 using System.Text;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TriaDemo.Common;
 using TriaDemo.Repository.DependencyInjection;
 using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.RestApi.Options;
@@ -14,6 +16,22 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddTriaDemoServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ICurrentUser>(
+            sp =>
+            {
+                var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+                var user = httpContextAccessor.HttpContext!.User;
+                var userId = user.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                var email = user.FindFirstValue(ClaimTypes.Email)!;
+
+                if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(email))
+                {
+                    return new AuthenticatedUser { UserId = Guid.Parse(userId), Email = email };
+                }
+
+                return new AnonymousUser();
+            }
+        );
         services.AddSingleton<TokenGenerator>();
         services.AddValidators();
         
