@@ -101,6 +101,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
         services.AddSingleton<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
+        services.AddSingleton<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
         
         return services;
     }

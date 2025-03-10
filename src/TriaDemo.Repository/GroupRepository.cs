@@ -6,8 +6,15 @@ namespace TriaDemo.Repository;
 
 internal sealed class GroupRepository(TriaDemoDbContext dbContext) : IGroupRepository
 {
-    public Task<Group> GetReaderGroupAsync(CancellationToken cancellationToken = default)
+    private readonly DbSet<Group> _dbSet = dbContext.Groups;
+    
+    public async Task<Group> GetReaderGroupAsync(CancellationToken cancellationToken = default)
     {
-        return dbContext.Groups.SingleAsync(g => g.GroupName == "reader", cancellationToken);
+        return await _dbSet.SingleAsync(g => g.GroupName == "reader", cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<Group>> GetGroupsAsync(IList<string> groupNames, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.Where(g => groupNames.Contains(g.GroupName)).ToListAsync(cancellationToken);
     }
 }

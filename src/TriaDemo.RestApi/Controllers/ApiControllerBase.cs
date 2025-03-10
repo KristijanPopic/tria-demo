@@ -38,4 +38,13 @@ public class ApiControllerBase : ControllerBase
             detail: detail, 
             statusCode: StatusCodes.Status404NotFound);
     }
+
+    protected ObjectResult ConflictProblem(string detail)
+    {
+        return Problem(
+            type:"Conflict",
+            title: "Value is already in use.",
+            detail: detail, 
+            statusCode: StatusCodes.Status409Conflict);
+    }
 }

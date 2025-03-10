@@ -13,4 +13,6 @@ public interface IUserRepository
     Task<User?> GetUserByIdAsync(Guid id, CancellationToken token = default);
     
     Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default);
+    
+    Task<User> UpdateAsync(User user, CancellationToken token = default);
 }

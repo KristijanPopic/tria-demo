@@ -2,7 +2,6 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TriaDemo.Common;
 using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.RestApi.Users;
 using TriaDemo.Service;
@@ -33,6 +32,12 @@ public class UserController(IUserService userService) : ApiControllerBase
             return ValidationProblem(validationResult);
         }
         
+        var existingUser = await userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        if (existingUser is not null)
+        {
+            return ConflictProblem("User with the given email already exists.");
+        }
+        
         var passwordHasher = new PasswordHasher<User>();
         var user = new User
         {
@@ -56,6 +61,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType<IEnumerable<GetUserResponse>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<GetUserResponse>>> GetUsers(CancellationToken cancellationToken = default)
     {
         // this would have paging in real-world application
@@ -71,6 +77,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     /// <returns></returns>
     [HttpGet("{id:guid}")]
     [ProducesResponseType<GetUserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GetUserResponse>> GetUser(Guid id, CancellationToken cancellationToken = default)
     {
@@ -131,11 +138,30 @@ public class UserController(IUserService userService) : ApiControllerBase
         return Ok(new UserLoginResponse { AccessToken = token });
     }
 
-    [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public ActionResult UpdateUser([FromServices]ICurrentUser user, CancellationToken cancellationToken = default)
+    [HttpPut]
+    [ProducesResponseType<UpdateUserResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UpdateUserResponse>> UpdateUser(UpdateUserRequest request, IValidator<UpdateUserRequest> validator, CancellationToken cancellationToken = default)
     {
-        return Ok(new { userId = user.UserId, email = user.Email });
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            return ValidationProblem(validationResult);
+        }
+        
+        var user = await userService.GetUserByIdAsync(request.Id, cancellationToken);
+        if (user is null)
+        {
+            return NotFoundProblem(title: "User not found", detail: $"User with id {request.Id} not found.");
+        }
+        
+        request.Map(user);
+        
+        var updatedUser = await userService.UpdateUserAsync(user, cancellationToken);
+        
+        return Ok(UpdateUserResponse.FromUser(updatedUser));
     }
 
     /// <summary>
@@ -146,6 +172,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     /// <returns></returns>
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken = default)
     {

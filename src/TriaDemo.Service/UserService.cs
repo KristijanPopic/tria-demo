@@ -15,16 +15,10 @@ internal sealed class UserService(
     
     public async Task<User> CreateUserAsync(User user, CancellationToken token = default)
     {
-        var existingUser = await userRepository.GetUserByEmailAsync(user.Email, token);
-        if (existingUser is not null)
-        {
-            throw new ValueNotUniqueException("User with the given email already exists.");
-        }
-        
-        var adminGroup = await groupRepository.GetReaderGroupAsync(token);
+        var readerGroup = await groupRepository.GetReaderGroupAsync(token);
         
         user.IsActive = true;
-        user.Groups.Add(adminGroup);
+        user.Groups.Add(readerGroup);
         
         return await userRepository.CreateAsync(user, token);
     }
@@ -36,12 +30,8 @@ internal sealed class UserService(
             throw new UnauthorizedException("User can not delete himself.");
         }
         
-        var authenticatedUser = await userRepository.GetUserByIdAsync(currentUser.UserId, token);
-        if (!authenticatedUser!.Groups.Exists(g => g.GroupName == GroupAdmin))
-        {
-            throw new UnauthorizedException("User must be admin to delete other users.");
-        }
-        
+        await ThrowIfCurrentUserIsNotAdmin("User must be admin to delete other users.", token);
+
         return await userRepository.DeleteAsync(user.Id, token);
     }
 
@@ -58,5 +48,26 @@ internal sealed class UserService(
     public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default)
     {
         return await userRepository.GetUsersAsync(token);
+    }
+
+    public async Task<User> UpdateUserAsync(User user, CancellationToken token = default)
+    {
+        await ThrowIfCurrentUserIsNotAdmin("User must be admin to update users.", token);
+        
+        var groupNames = user.Groups.Select(g => g.GroupName).ToArray();
+        var groups = await groupRepository.GetGroupsAsync(groupNames, token);
+
+        user.Groups = groups.ToList();
+
+        return await userRepository.UpdateAsync(user, token);
+    }
+
+    private async Task ThrowIfCurrentUserIsNotAdmin(string errorMessage, CancellationToken token)
+    {
+        var authenticatedUser = await userRepository.GetUserByIdAsync(currentUser.UserId, token);
+        if (!authenticatedUser!.Groups.Exists(g => g.GroupName == GroupAdmin))
+        {
+            throw new UnauthorizedException(errorMessage);
+        }
     }
 }
