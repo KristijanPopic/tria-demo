@@ -24,6 +24,13 @@ public static class ExceptionExtensions
                 Title = "Value is already in use.",
                 Detail = valueNotUniqueException.Message
             },
+            UnauthorizedException unauthorizedException => new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Type = "Forbidden",
+                Title = "User is not authorized to perform this operation.",
+                Detail = unauthorizedException.Message
+            },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,

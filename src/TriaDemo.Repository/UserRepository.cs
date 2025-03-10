@@ -13,13 +13,18 @@ internal sealed class UserRepository(TriaDemoDbContext dbContext) : IUserReposit
         return user;
     }
 
-    public async Task<bool> DeleteAsync(User user, CancellationToken token = default)
+    public async Task<bool> DeleteAsync(Guid userId, CancellationToken token = default)
     {
-        return await dbContext.Users.Where(u => u.Id == user.Id).ExecuteDeleteAsync(token) > 0;
+        return await dbContext.Users.Where(u => u.Id == userId).ExecuteDeleteAsync(token) > 0;
     }
 
     public async Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default)
     {
         return await dbContext.Users.SingleOrDefaultAsync(u => u.Email == email, token);
+    }
+
+    public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken token = default)
+    {
+        return await dbContext.Users.Include(u => u.Groups).SingleOrDefaultAsync(u => u.Id == id, token);
     }
 }

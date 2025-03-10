@@ -20,4 +20,22 @@ public class ApiControllerBase : ControllerBase
                 ["errors"] = validationResult.Errors
             });
     }
+    
+    protected ObjectResult UnauthorizedProblem(string title, string detail)
+    {
+        return Problem(
+            type:"Unauthorized",
+            title: title,
+            detail: detail, 
+            statusCode: StatusCodes.Status401Unauthorized);
+    }
+
+    protected ObjectResult NotFoundProblem(string title, string detail)
+    {
+        return Problem(
+            type:"Not found",
+            title: title,
+            detail: detail, 
+            statusCode: StatusCodes.Status404NotFound);
+    }
 }

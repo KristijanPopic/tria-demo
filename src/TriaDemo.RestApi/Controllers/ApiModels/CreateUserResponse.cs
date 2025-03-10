@@ -12,6 +12,8 @@ public sealed class CreateUserResponse
 
     public required string LastName { get; set; }
 
+    public bool IsActive { get; set; }
+
     public static CreateUserResponse FromUser(User user)
     {
         return new CreateUserResponse
@@ -20,6 +22,7 @@ public sealed class CreateUserResponse
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
+            IsActive = user.IsActive
         };
     }
 }

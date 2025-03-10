@@ -14,4 +14,8 @@
       <Folder Include="Validators\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TriaDemo.Common\TriaDemo.Common.csproj" />
+    </ItemGroup>
+
 </Project>

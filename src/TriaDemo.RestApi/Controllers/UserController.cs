@@ -1,6 +1,8 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TriaDemo.Common;
 using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.Service;
 using TriaDemo.Service.Models;
@@ -8,6 +10,7 @@ using TriaDemo.Service.Models;
 namespace TriaDemo.RestApi.Controllers;
 
 [Route("api/users")]
+[Authorize]
 public class UserController(IUserService userService) : ApiControllerBase
 {
     /// <summary>
@@ -20,6 +23,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     [HttpPost]
     [ProducesResponseType<CreateUserResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [AllowAnonymous]
     public async Task<ActionResult<CreateUserResponse>> CreateUser(CreateUserRequest request, [FromServices]IValidator<CreateUserRequest> validator, CancellationToken cancellationToken = default)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -55,6 +59,8 @@ public class UserController(IUserService userService) : ApiControllerBase
     [HttpPost("login")]
     [ProducesResponseType<UserLoginResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [AllowAnonymous]
     public async Task<ActionResult<UserLoginRequest>> Login(
         UserLoginRequest request,
         [FromServices]IValidator<UserLoginRequest> validator,
@@ -73,6 +79,11 @@ public class UserController(IUserService userService) : ApiControllerBase
         {
             return UnauthorizedProblem("Login failed", $"User with email {request.Email} does not exist.");
         }
+        if (!user.IsActive)
+        {
+            return UnauthorizedProblem("Login failed", $"User with email {request.Email} is disabled.");
+        }
+        
         var passwordHasher = new PasswordHasher<User>();
         
         var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash!, request.Password);
@@ -85,12 +96,31 @@ public class UserController(IUserService userService) : ApiControllerBase
         return Ok(new UserLoginResponse { AccessToken = token });
     }
 
-    private ObjectResult UnauthorizedProblem(string title, string detail)
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public ActionResult UpdateUser([FromServices]ICurrentUser user, CancellationToken cancellationToken = default)
     {
-        return Problem(
-            type:"Unauthorized",
-            title: title,
-            detail: detail, 
-            statusCode: StatusCodes.Status401Unauthorized);
+        return Ok(new { userId = user.UserId, email = user.Email });
+    }
+
+    /// <summary>
+    /// Deletes the user.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken = default)
+    {
+        var user = await userService.GetUserByIdAsync(id, cancellationToken);
+        if (user is null)
+        {
+            return NotFoundProblem(title: "User not found", detail: $"User with id {id} not found.");
+        }
+        
+        await userService.DeleteUserAsync(user, cancellationToken);
+        return NoContent();
     }
 }
