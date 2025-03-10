@@ -22,7 +22,8 @@ public sealed class TokenGenerator(IOptions<JwtTokenOptions> options)
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email)
         };
-
+        // We don't want to put roles (groups) in claims because they can change. Token would still contain the old roles until it expires
+        
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
@@ -31,7 +32,7 @@ public sealed class TokenGenerator(IOptions<JwtTokenOptions> options)
             Audience = _tokenOptions.Audience,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
-        
+
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
