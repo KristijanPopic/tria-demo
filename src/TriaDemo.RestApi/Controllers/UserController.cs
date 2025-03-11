@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TriaDemo.RestApi.Authorization;
 using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.RestApi.Users;
 using TriaDemo.Service;
@@ -143,6 +144,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeAdmin]
     public async Task<ActionResult<UpdateUserResponse>> UpdateUser(UpdateUserRequest request, IValidator<UpdateUserRequest> validator, CancellationToken cancellationToken = default)
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -174,6 +176,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [AuthorizeAdmin]
     public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken = default)
     {
         var user = await userService.GetUserByIdAsync(id, cancellationToken);

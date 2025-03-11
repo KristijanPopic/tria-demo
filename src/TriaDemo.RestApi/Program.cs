@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TriaDemo.Repository;
+using TriaDemo.RestApi.Authorization;
 using TriaDemo.RestApi.DependencyInjection;
 using TriaDemo.RestApi.Exceptions;
 
@@ -17,8 +18,12 @@ builder.Services.AddProblemDetails(o =>
         context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
     });
 
-builder.Services.AddAuthorization();
 builder.Services.AddJwtBearerAuthentication(builder.Configuration);
+builder.Services.AddAuthorization(
+    policy =>
+    {
+        policy.AddPolicy("IsAdmin", p => p.AddRequirements(new GroupRequirement("admin")));
+    });
 
 builder.Services.AddTriaDemoServices(builder.Configuration);
 

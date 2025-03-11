@@ -10,12 +10,4 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Validators\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\TriaDemo.Common\TriaDemo.Common.csproj" />
-    </ItemGroup>
-
 </Project>

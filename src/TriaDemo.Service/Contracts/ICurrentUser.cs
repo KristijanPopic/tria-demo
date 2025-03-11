@@ -1,4 +1,4 @@
-namespace TriaDemo.Common;
+namespace TriaDemo.Service.Contracts;
 
 public interface ICurrentUser
 {

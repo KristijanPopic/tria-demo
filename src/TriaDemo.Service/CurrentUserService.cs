@@ -1,29 +1,30 @@
-using TriaDemo.Common;
 using TriaDemo.Service.Contracts;
+using TriaDemo.Service.Models;
 
 namespace TriaDemo.Service;
 
-internal sealed class CurrentUserService(ICurrentUser currentUser, IUserRepository userRepository)
+public sealed class CurrentUserService(ICurrentUser currentUser, IUserRepository userRepository)
 {
     private const string GroupAdmin = "admin";
     
-    private bool? _isAdmin;
+    private User? _authenticatedUser;
 
     public ICurrentUser CurrentUser => currentUser;
 
     public async Task<bool> IsAdmin(CancellationToken token = default)
+    {
+        return await IsInGroup(GroupAdmin, token);
+    }
+
+    public async Task<bool> IsInGroup(string groupName, CancellationToken token = default)
     {
         if (!currentUser.IsAuthenticated)
         {
             return false;
         }
         
-        if (!_isAdmin.HasValue)
-        {
-            var authenticatedUser = await userRepository.GetUserByIdAsync(currentUser.UserId, token);
-            _isAdmin = authenticatedUser!.Groups.Exists(g => g.GroupName == GroupAdmin);
-        }
+        _authenticatedUser ??= await userRepository.GetUserByIdAsync(currentUser.UserId, token);
         
-        return _isAdmin.Value;
+        return _authenticatedUser!.Groups.Exists(g => g.GroupName == groupName);
     }
 }

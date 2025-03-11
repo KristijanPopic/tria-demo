@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Common", "TriaDemo.Common\TriaDemo.Common.csproj", "{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Service", "TriaDemo.Service\TriaDemo.Service.csproj", "{668B0575-780D-449A-B1DF-2125D3FC3EA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Repository", "TriaDemo.Repository\TriaDemo.Repository.csproj", "{93878829-CDB5-4475-90EB-0A103F0071D4}"
@@ -26,10 +24,6 @@ Global
 		{6DDFFF25-E496-48D8-B74F-5396FF00566E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DDFFF25-E496-48D8-B74F-5396FF00566E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DDFFF25-E496-48D8-B74F-5396FF00566E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{668B0575-780D-449A-B1DF-2125D3FC3EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{668B0575-780D-449A-B1DF-2125D3FC3EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{668B0575-780D-449A-B1DF-2125D3FC3EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -40,7 +34,6 @@ Global
 		{93878829-CDB5-4475-90EB-0A103F0071D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7D43F0DE-E3FF-4100-A29C-18A4BC0975E5} = {72ABA090-0218-4B12-A0B9-DA484C88CE70}
 		{93878829-CDB5-4475-90EB-0A103F0071D4} = {72ABA090-0218-4B12-A0B9-DA484C88CE70}
 		{668B0575-780D-449A-B1DF-2125D3FC3EA6} = {72ABA090-0218-4B12-A0B9-DA484C88CE70}
 	EndGlobalSection

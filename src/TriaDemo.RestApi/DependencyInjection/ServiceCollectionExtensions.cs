@@ -4,11 +4,11 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TriaDemo.Common;
 using TriaDemo.Repository.DependencyInjection;
 using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.RestApi.Options;
 using TriaDemo.RestApi.Users;
+using TriaDemo.Service.Contracts;
 using TriaDemo.Service.DependencyInjection;
 
 namespace TriaDemo.RestApi.DependencyInjection;

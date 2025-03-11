@@ -1,4 +1,4 @@
-using TriaDemo.Common;
+using TriaDemo.Service.Contracts;
 
 namespace TriaDemo.RestApi.Users;
 
