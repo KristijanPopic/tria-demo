@@ -10,4 +10,10 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>TriaDemo.Service.UnitTest</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
 </Project>
