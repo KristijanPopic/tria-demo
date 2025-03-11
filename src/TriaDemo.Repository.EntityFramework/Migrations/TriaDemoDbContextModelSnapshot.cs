@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using TriaDemo.Repository;
+using TriaDemo.Repository.EntityFramework;
 
 #nullable disable
 
-namespace TriaDemo.Repository.Migrations
+namespace TriaDemo.Repository.EntityFramework.Migrations
 {
     [DbContext(typeof(TriaDemoDbContext))]
     partial class TriaDemoDbContextModelSnapshot : ModelSnapshot

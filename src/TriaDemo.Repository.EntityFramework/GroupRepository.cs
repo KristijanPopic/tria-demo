@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TriaDemo.Service.Contracts;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Repository;
+namespace TriaDemo.Repository.EntityFramework;
 
 internal sealed class GroupRepository(TriaDemoDbContext dbContext) : IGroupRepository
 {

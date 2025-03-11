@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TriaDemo.Repository.DependencyInjection;
+using TriaDemo.Repository.EntityFramework.DependencyInjection;
 using TriaDemo.RestApi.Authentication;
 using TriaDemo.RestApi.Controllers.Groups;
 using TriaDemo.RestApi.Controllers.Users;

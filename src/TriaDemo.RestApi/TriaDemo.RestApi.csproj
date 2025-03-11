@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TriaDemo.Repository\TriaDemo.Repository.csproj" />
+      <ProjectReference Include="..\TriaDemo.Repository.EntityFramework\TriaDemo.Repository.EntityFramework.csproj" />
     </ItemGroup>
 
 </Project>

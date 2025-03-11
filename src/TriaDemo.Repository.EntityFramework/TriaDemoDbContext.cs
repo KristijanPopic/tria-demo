@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Repository;
+namespace TriaDemo.Repository.EntityFramework;
 
 public class TriaDemoDbContext(DbContextOptions<TriaDemoDbContext> options) : DbContext(options)
 {

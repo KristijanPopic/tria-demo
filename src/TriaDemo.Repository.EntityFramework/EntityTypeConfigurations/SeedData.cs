@@ -1,6 +1,6 @@
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Repository.EntityTypeConfigurations;
+namespace TriaDemo.Repository.EntityFramework.EntityTypeConfigurations;
 
 internal static class SeedData
 {

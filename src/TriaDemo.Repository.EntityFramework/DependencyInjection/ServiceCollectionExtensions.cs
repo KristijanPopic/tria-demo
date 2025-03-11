@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TriaDemo.Service.Contracts;
 
-namespace TriaDemo.Repository.DependencyInjection;
+namespace TriaDemo.Repository.EntityFramework.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
