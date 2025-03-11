@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using TriaDemo.Repository;
 using TriaDemo.RestApi.Authorization;
@@ -19,6 +20,7 @@ builder.Services.AddProblemDetails(o =>
     });
 
 builder.Services.AddJwtBearerAuthentication(builder.Configuration);
+builder.Services.AddScoped<IAuthorizationHandler, GroupRequirementAuthorizationHandler>();
 builder.Services.AddAuthorization(
     policy =>
     {
