@@ -3,7 +3,7 @@ namespace TriaDemo.Service.Models;
 public sealed class Group
 {
     public const string GroupAdmin = "admin";
-    public const string GroupReader = "reader";
+    public const string GroupRegular = "regular";
     
     public Guid Id { get; set; }
 

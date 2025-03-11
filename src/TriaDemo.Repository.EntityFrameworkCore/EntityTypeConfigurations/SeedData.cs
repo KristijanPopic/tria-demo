@@ -19,12 +19,12 @@ internal static class SeedData
         var groupAdmin = new Group
         {
             Id = Guid.Parse("ca280668-67c8-47be-b023-89d5b8a96366"),
-            GroupName = "admin"
+            GroupName = Group.GroupAdmin
         };
         var groupReader = new Group
         {
             Id = Guid.Parse("e93d60bd-594d-48cc-a000-b14b252a4b17"),
-            GroupName = "reader"
+            GroupName = Group.GroupRegular
         };
         
         Users.Add(user);

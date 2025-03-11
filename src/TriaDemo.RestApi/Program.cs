@@ -4,6 +4,7 @@ using TriaDemo.Repository.EntityFrameworkCore;
 using TriaDemo.RestApi.Authorization;
 using TriaDemo.RestApi.DependencyInjection;
 using TriaDemo.RestApi.Exceptions;
+using TriaDemo.Service.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddScoped<IAuthorizationHandler, GroupRequirementAuthorizationH
 builder.Services.AddAuthorization(
     policy =>
     {
-        policy.AddPolicy("IsAdmin", p => p.AddRequirements(new GroupRequirement("admin")));
+        policy.AddPolicy("IsAdmin", p => p.AddRequirements(new GroupRequirement(Group.GroupAdmin)));
     });
 
 builder.Services.AddTriaDemoServices(builder.Configuration);

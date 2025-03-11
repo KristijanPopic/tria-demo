@@ -20,9 +20,9 @@ internal sealed class GroupRepository(TriaDemoDbContext dbContext) : IGroupRepos
         return await _dbSet.Where(u => u.Id == id).ExecuteDeleteAsync(cancellationToken) > 0;
     }
 
-    public async Task<Group> GetReaderGroupAsync(CancellationToken cancellationToken = default)
+    public async Task<Group> GetRegularGroupAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.SingleAsync(g => g.GroupName == "reader", cancellationToken);
+        return await _dbSet.SingleAsync(g => g.GroupName == Group.GroupRegular, cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<Group>> GetAsync(IList<string> groupNames, CancellationToken cancellationToken = default)

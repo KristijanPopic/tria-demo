@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-            <_Parameter1>TriaDemo.Service.UnitTest</_Parameter1>
+            <_Parameter1>TriaDemo.Service.UnitTests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 

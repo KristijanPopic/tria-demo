@@ -27,9 +27,9 @@ internal sealed class GroupService(CurrentUserService currentUserService, IGroup
         {
             throw new UnauthorizedException("User must be admin to delete groups.");
         }
-        if (group.GroupName == Group.GroupAdmin)
+        if (group.GroupName is Group.GroupAdmin or Group.GroupRegular)
         {
-            throw new UnauthorizedException("Admin group cannot be deleted.");
+            throw new UnauthorizedException("Groups 'admin' and 'reader' are default and cannot be deleted.");
         }
         
         return await groupRepository.DeleteAsync(group.Id, cancellationToken);

@@ -1,6 +1,6 @@
 using TriaDemo.Service.Contracts;
 
-namespace TriaDemo.Service.UnitTest.TestDoubles;
+namespace TriaDemo.Service.UnitTests.TestDoubles;
 
 public sealed class CurrentUserStub : ICurrentUser
 {

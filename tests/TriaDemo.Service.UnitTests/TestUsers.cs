@@ -1,10 +1,10 @@
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Service.UnitTest;
+namespace TriaDemo.Service.UnitTests;
 
 public static class TestUsers
 {
-    public static User AdminUser = new User
+    public static User AdminUser = new()
     {
         Email = "admin@gmail.com",
         FirstName = "Admin",
@@ -16,12 +16,12 @@ public static class TestUsers
         [
             new Group
             {
-                GroupName = "admin"
+                GroupName = Group.GroupAdmin
             }
         ]
     };
 
-    public static User ReaderUser1 = new User
+    public static User RegularUser1 = new()
     {
         Email = "josh.doe@gmail.com",
         FirstName = "Josh",
@@ -33,12 +33,12 @@ public static class TestUsers
         [
             new Group
             {
-                GroupName = "reader"
+                GroupName = Group.GroupRegular
             }
         ]
     };
     
-    public static User ReaderUser2 = new User
+    public static User RegularUser2 = new()
     {
         Email = "miguel.hernandez@gmail.com",
         FirstName = "Miguel",
@@ -50,7 +50,7 @@ public static class TestUsers
         [
             new Group
             {
-                GroupName = "reader"
+                GroupName = Group.GroupRegular
             }
         ]
     };

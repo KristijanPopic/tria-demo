@@ -49,7 +49,7 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         new
                         {
                             Id = new Guid("e93d60bd-594d-48cc-a000-b14b252a4b17"),
-                            GroupName = "reader"
+                            GroupName = "regular"
                         });
                 });
 

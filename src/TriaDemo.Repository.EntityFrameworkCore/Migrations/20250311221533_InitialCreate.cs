@@ -71,7 +71,7 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                 values: new object[,]
                 {
                     { new Guid("ca280668-67c8-47be-b023-89d5b8a96366"), "admin" },
-                    { new Guid("e93d60bd-594d-48cc-a000-b14b252a4b17"), "reader" }
+                    { new Guid("e93d60bd-594d-48cc-a000-b14b252a4b17"), "regular" }
                 });
 
             migrationBuilder.InsertData(

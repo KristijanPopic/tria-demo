@@ -12,10 +12,10 @@ internal sealed class UserService(
 {
     public async Task<User> CreateAsync(User user, CancellationToken token = default)
     {
-        var readerGroup = await groupRepository.GetReaderGroupAsync(token);
+        var regularGroup = await groupRepository.GetRegularGroupAsync(token);
         
         user.IsActive = true;
-        user.Groups.Add(readerGroup);
+        user.Groups.Add(regularGroup);
         
         return await userRepository.CreateAsync(user, token);
     }
@@ -58,11 +58,6 @@ internal sealed class UserService(
 
         var groupNames = user.Groups.Select(g => g.GroupName).ToArray();
         var groups = await groupRepository.GetAsync(groupNames, token);
-        
-        if (groups.Count == 0)
-        {
-            throw new InvalidEntityException("User must be assigned to at least one group.");
-        }
 
         user.Groups = groups.ToList();
 

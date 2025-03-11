@@ -2,9 +2,9 @@
 using TriaDemo.Service.Contracts;
 using TriaDemo.Service.Exceptions;
 using TriaDemo.Service.Models;
-using TriaDemo.Service.UnitTest.TestDoubles;
+using TriaDemo.Service.UnitTests.TestDoubles;
 
-namespace TriaDemo.Service.UnitTest;
+namespace TriaDemo.Service.UnitTests;
 
 public sealed class UserServiceTests
 {
@@ -15,7 +15,7 @@ public sealed class UserServiceTests
         userRepositoryMock
             .Setup(m => m.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
-        var userToDelete = TestUsers.ReaderUser2;
+        var userToDelete = TestUsers.RegularUser2;
         var sut = CreateSut(userRepositoryMock, authenticatedUser: TestUsers.AdminUser);
 
         var result = await sut.DeleteAsync(userToDelete, CancellationToken.None);
@@ -30,14 +30,14 @@ public sealed class UserServiceTests
         userRepositoryMock
             .Setup(m => m.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
-        var userToDelete = TestUsers.ReaderUser2;
-        var sut = CreateSut(userRepositoryMock, authenticatedUser: TestUsers.ReaderUser1);
+        var userToDelete = TestUsers.RegularUser2;
+        var sut = CreateSut(userRepositoryMock, authenticatedUser: TestUsers.RegularUser1);
 
         await Assert.ThrowsAsync<UnauthorizedException>(async () => await sut.DeleteAsync(userToDelete, CancellationToken.None));
     }
 
     [Fact]
-    public async Task New_user_is_created_in_reader_group()
+    public async Task New_user_is_created_in_regular_group()
     {
         var user = new User
         {
@@ -55,7 +55,7 @@ public sealed class UserServiceTests
         
         var result = await sut.CreateAsync(user, CancellationToken.None);
 
-        Assert.Contains(result.Groups, g => g.GroupName == "reader");
+        Assert.Contains(result.Groups, g => g.GroupName == Group.GroupRegular);
     }
 
     private static UserService CreateSut(Mock<IUserRepository> userRepositoryMock, User? authenticatedUser = null)
@@ -75,8 +75,8 @@ public sealed class UserServiceTests
         
         var groupRepositoryMock = new Mock<IGroupRepository>();
         groupRepositoryMock
-            .Setup(m => m.GetReaderGroupAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Group { Id = Guid.Parse("e93d60bd-594d-48cc-a000-b14b252a4b17"), GroupName = "reader" });
+            .Setup(m => m.GetRegularGroupAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Group { Id = Guid.Parse("e93d60bd-594d-48cc-a000-b14b252a4b17"), GroupName = Group.GroupRegular });
 
         return new UserService(currentUserService, userRepositoryMock.Object, groupRepositoryMock.Object);
         

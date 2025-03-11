@@ -8,7 +8,7 @@ public interface IGroupRepository
     
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     
-    Task<Group> GetReaderGroupAsync(CancellationToken cancellationToken = default);
+    Task<Group> GetRegularGroupAsync(CancellationToken cancellationToken = default);
     
     Task<IReadOnlyCollection<Group>> GetAsync(IList<string> groupNames, CancellationToken cancellationToken = default);
     

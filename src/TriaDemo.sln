@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Repository.EntityF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{72ABA090-0218-4B12-A0B9-DA484C88CE70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Service.UnitTest", "..\tests\TriaDemo.Service.UnitTest\TriaDemo.Service.UnitTest.csproj", "{4341941E-FD07-4328-8DEE-7F6F1F53A302}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Service.UnitTests", "..\tests\TriaDemo.Service.UnitTests\TriaDemo.Service.UnitTests.csproj", "{4341941E-FD07-4328-8DEE-7F6F1F53A302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
