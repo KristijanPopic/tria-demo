@@ -1,4 +1,4 @@
-namespace TriaDemo.RestApi.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.Users;
 
 public sealed class CreateUserRequest
 {

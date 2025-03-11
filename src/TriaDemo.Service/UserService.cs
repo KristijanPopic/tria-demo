@@ -10,7 +10,7 @@ internal sealed class UserService(
     IGroupRepository groupRepository
     ) : IUserService
 {
-    public async Task<User> CreateUserAsync(User user, CancellationToken token = default)
+    public async Task<User> CreateAsync(User user, CancellationToken token = default)
     {
         var readerGroup = await groupRepository.GetReaderGroupAsync(token);
         
@@ -20,7 +20,7 @@ internal sealed class UserService(
         return await userRepository.CreateAsync(user, token);
     }
 
-    public async Task<bool> DeleteUserAsync(User user, CancellationToken token = default)
+    public async Task<bool> DeleteAsync(User user, CancellationToken token = default)
     {
         if (currentUserService.CurrentUser.UserId == user.Id)
         {
@@ -35,22 +35,22 @@ internal sealed class UserService(
         return await userRepository.DeleteAsync(user.Id, token);
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken token = default)
     {
         return await userRepository.GetUserByEmailAsync(email, token);
     }
 
-    public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken token = default)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
         return await userRepository.GetUserByIdAsync(id, token);
     }
 
-    public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default)
+    public async Task<IReadOnlyCollection<User>> GetAsync(CancellationToken token = default)
     {
         return await userRepository.GetUsersAsync(token);
     }
 
-    public async Task<User> UpdateUserAsync(User user, CancellationToken token = default)
+    public async Task<User> UpdateAsync(User user, CancellationToken token = default)
     {
         if (!await currentUserService.IsAdmin(token))
         {

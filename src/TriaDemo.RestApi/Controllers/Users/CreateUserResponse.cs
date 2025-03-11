@@ -1,6 +1,6 @@
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.RestApi.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.Users;
 
 public sealed class CreateUserResponse
 {

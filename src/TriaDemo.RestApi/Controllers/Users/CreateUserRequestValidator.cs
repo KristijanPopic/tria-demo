@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace TriaDemo.RestApi.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.Users;
 
 internal sealed class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 {

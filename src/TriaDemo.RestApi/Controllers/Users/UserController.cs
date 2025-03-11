@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TriaDemo.RestApi.Authorization;
-using TriaDemo.RestApi.Controllers.ApiModels;
 using TriaDemo.RestApi.Users;
 using TriaDemo.Service;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.RestApi.Controllers;
+namespace TriaDemo.RestApi.Controllers.Users;
 
 [Route("api/users")]
 [Authorize]
@@ -33,7 +32,7 @@ public class UserController(IUserService userService) : ApiControllerBase
             return ValidationProblem(validationResult);
         }
         
-        var existingUser = await userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        var existingUser = await userService.GetByEmailAsync(request.Email, cancellationToken);
         if (existingUser is not null)
         {
             return ConflictProblem("User with the given email already exists.");
@@ -50,7 +49,7 @@ public class UserController(IUserService userService) : ApiControllerBase
         
         user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
 
-        var createdUser = await userService.CreateUserAsync(user, cancellationToken);
+        var createdUser = await userService.CreateAsync(user, cancellationToken);
         
         return Ok(CreateUserResponse.FromUser(createdUser));
     }
@@ -66,7 +65,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     public async Task<ActionResult<IEnumerable<GetUserResponse>>> GetUsers(CancellationToken cancellationToken = default)
     {
         // this would have paging in real-world application
-        var users = await userService.GetUsersAsync(cancellationToken);
+        var users = await userService.GetAsync(cancellationToken);
         return Ok(users.Select(GetUserResponse.FromUser));
     }
     
@@ -82,11 +81,10 @@ public class UserController(IUserService userService) : ApiControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GetUserResponse>> GetUser(Guid id, CancellationToken cancellationToken = default)
     {
-        // this would have paging in real-world application
-        var user = await userService.GetUserByIdAsync(id, cancellationToken);
+        var user = await userService.GetByIdAsync(id, cancellationToken);
         if (user is null)
         {
-            return NotFoundProblem(title: "User not found", detail: $"User with id {id} not found.");
+            return UserNotFoundProblem(id);
         }
         return Ok(GetUserResponse.FromUser(user));
     }
@@ -117,7 +115,7 @@ public class UserController(IUserService userService) : ApiControllerBase
             return ValidationProblem(validationResult);
         }
         
-        var user = await userService.GetUserByEmailAsync(request.Email, cancellationToken);
+        var user = await userService.GetByEmailAsync(request.Email, cancellationToken);
         if (user is null)
         {
             return UnauthorizedProblem("Login failed", $"User with email {request.Email} does not exist.");
@@ -143,6 +141,7 @@ public class UserController(IUserService userService) : ApiControllerBase
     [ProducesResponseType<UpdateUserResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAdmin]
     public async Task<ActionResult<UpdateUserResponse>> UpdateUser(UpdateUserRequest request, IValidator<UpdateUserRequest> validator, CancellationToken cancellationToken = default)
@@ -153,15 +152,15 @@ public class UserController(IUserService userService) : ApiControllerBase
             return ValidationProblem(validationResult);
         }
         
-        var user = await userService.GetUserByIdAsync(request.Id, cancellationToken);
+        var user = await userService.GetByIdAsync(request.Id, cancellationToken);
         if (user is null)
         {
-            return NotFoundProblem(title: "User not found", detail: $"User with id {request.Id} not found.");
+            return UserNotFoundProblem(request.Id);        
         }
         
         request.Map(user);
         
-        var updatedUser = await userService.UpdateUserAsync(user, cancellationToken);
+        var updatedUser = await userService.UpdateAsync(user, cancellationToken);
         
         return Ok(UpdateUserResponse.FromUser(updatedUser));
     }
@@ -175,17 +174,23 @@ public class UserController(IUserService userService) : ApiControllerBase
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [AuthorizeAdmin]
     public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken = default)
     {
-        var user = await userService.GetUserByIdAsync(id, cancellationToken);
+        var user = await userService.GetByIdAsync(id, cancellationToken);
         if (user is null)
         {
-            return NotFoundProblem(title: "User not found", detail: $"User with id {id} not found.");
+            return UserNotFoundProblem(id);
         }
         
-        await userService.DeleteUserAsync(user, cancellationToken);
+        await userService.DeleteAsync(user, cancellationToken);
         return NoContent();
+    }
+    
+    private ObjectResult UserNotFoundProblem(Guid id)
+    {
+        return NotFoundProblem(title: "User not found", detail: $"User with id {id} not found.");
     }
 }

@@ -1,6 +1,6 @@
-namespace TriaDemo.RestApi.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.Users;
 
-public class UserLoginRequest
+public sealed class UserLoginRequest
 {
     public required string Email { get; set; }
 

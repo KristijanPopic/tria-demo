@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TriaDemo.Repository.DependencyInjection;
-using TriaDemo.RestApi.Controllers.ApiModels;
+using TriaDemo.RestApi.Controllers.Groups;
+using TriaDemo.RestApi.Controllers.Users;
 using TriaDemo.RestApi.Options;
 using TriaDemo.RestApi.Users;
 using TriaDemo.Service.Contracts;
@@ -102,6 +103,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
         services.AddSingleton<IValidator<UserLoginRequest>, UserLoginRequestValidator>();
         services.AddSingleton<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
+        services.AddSingleton<IValidator<CreateGroupRequest>, CreateGroupRequestValidator>();
+        services.AddSingleton<IValidator<UpdateGroupRequest>, UpdateGroupRequestValidator>();
         
         return services;
     }

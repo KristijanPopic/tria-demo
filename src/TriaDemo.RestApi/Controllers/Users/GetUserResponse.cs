@@ -1,11 +1,11 @@
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.RestApi.Controllers.ApiModels;
+namespace TriaDemo.RestApi.Controllers.Users;
 
-public sealed class UpdateUserResponse
+public sealed class GetUserResponse
 {
     public required Guid Id { get; set; }
-    
+
     public required string Email { get; set; }
 
     public required string FirstName { get; set; }
@@ -13,12 +13,12 @@ public sealed class UpdateUserResponse
     public required string LastName { get; set; }
 
     public bool IsActive { get; set; }
-    
-    public required IEnumerable<string> Groups { get; set; }
 
-    public static UpdateUserResponse FromUser(User user)
+    public required IEnumerable<string> Groups { get; set; }
+    
+    public static GetUserResponse FromUser(User user)
     {
-        return new UpdateUserResponse
+        return new GetUserResponse
         {
             Id = user.Id,
             Email = user.Email,
