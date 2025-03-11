@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.Repository.EntityFramework.EntityTypeConfigurations;
+namespace TriaDemo.Repository.EntityFrameworkCore.EntityTypeConfigurations;
 
 internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
 {

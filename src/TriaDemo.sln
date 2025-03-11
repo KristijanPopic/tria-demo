@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Service", "TriaDemo.Service\TriaDemo.Service.csproj", "{668B0575-780D-449A-B1DF-2125D3FC3EA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Repository.EntityFramework", "TriaDemo.Repository.EntityFramework\TriaDemo.Repository.EntityFramework.csproj", "{93878829-CDB5-4475-90EB-0A103F0071D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriaDemo.Repository.EntityFrameworkCore", "TriaDemo.Repository.EntityFrameworkCore\TriaDemo.Repository.EntityFrameworkCore.csproj", "{93878829-CDB5-4475-90EB-0A103F0071D4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{72ABA090-0218-4B12-A0B9-DA484C88CE70}"
 EndProject

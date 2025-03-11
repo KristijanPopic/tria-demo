@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using TriaDemo.Repository.EntityFramework;
+using TriaDemo.Repository.EntityFrameworkCore;
 using TriaDemo.RestApi.Authorization;
 using TriaDemo.RestApi.DependencyInjection;
 using TriaDemo.RestApi.Exceptions;
