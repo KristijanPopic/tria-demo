@@ -16,7 +16,7 @@ public sealed class UserServiceTests
             .Setup(m => m.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         var userToDelete = TestUsers.ReaderUser2;
-        var sut = CreateSut(userRepositoryMock, TestUsers.AdminUser);
+        var sut = CreateSut(userRepositoryMock, authenticatedUser: TestUsers.AdminUser);
 
         var result = await sut.DeleteAsync(userToDelete, CancellationToken.None);
         
@@ -29,9 +29,9 @@ public sealed class UserServiceTests
         var userRepositoryMock = new Mock<IUserRepository>();
         userRepositoryMock
             .Setup(m => m.DeleteAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);
+            .ReturnsAsync(false);
         var userToDelete = TestUsers.ReaderUser2;
-        var sut = CreateSut(userRepositoryMock, TestUsers.ReaderUser1);
+        var sut = CreateSut(userRepositoryMock, authenticatedUser: TestUsers.ReaderUser1);
 
         await Assert.ThrowsAsync<UnauthorizedException>(async () => await sut.DeleteAsync(userToDelete, CancellationToken.None));
     }
@@ -60,17 +60,17 @@ public sealed class UserServiceTests
 
     private static UserService CreateSut(Mock<IUserRepository> userRepositoryMock, User? authenticatedUser = null)
     {
-        userRepositoryMock
-            .Setup(m => m.GetUserByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => authenticatedUser);
-        
         var currentUser = new CurrentUserStub
         {
-            Email = "jane.doe@example.com",
+            Email = authenticatedUser?.Email ?? "jane.doe@example.com",
             IsAuthenticated = true,
-            UserId = Guid.Parse("46e8d539-effb-4589-92c0-4d6d81c4c1d9")
+            UserId = authenticatedUser?.Id ?? Guid.Parse("46e8d539-effb-4589-92c0-4d6d81c4c1d9")
         };
         
+        userRepositoryMock
+            .Setup(m => m.GetUserByIdAsync(currentUser.UserId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => authenticatedUser);
+
         var currentUserService = new CurrentUserService(currentUser, userRepositoryMock.Object);
         
         var groupRepositoryMock = new Mock<IGroupRepository>();
