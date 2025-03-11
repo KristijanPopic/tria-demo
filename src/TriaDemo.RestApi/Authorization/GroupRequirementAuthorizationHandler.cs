@@ -3,7 +3,7 @@ using TriaDemo.Service;
 
 namespace TriaDemo.RestApi.Authorization;
 
-public class GroupRequirementAuthorizationHandler(CurrentUserService currentUserService) : AuthorizationHandler<GroupRequirement>
+public sealed class GroupRequirementAuthorizationHandler(CurrentUserService currentUserService) : AuthorizationHandler<GroupRequirement>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, GroupRequirement requirement)
     {
