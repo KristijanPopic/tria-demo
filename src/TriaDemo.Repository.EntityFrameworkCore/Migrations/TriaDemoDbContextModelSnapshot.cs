@@ -35,6 +35,9 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupName")
+                        .IsUnique();
+
                     b.ToTable("Group", (string)null);
 
                     b.HasData(

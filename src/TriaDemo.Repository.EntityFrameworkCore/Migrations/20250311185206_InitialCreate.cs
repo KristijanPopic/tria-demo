@@ -85,6 +85,12 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                 values: new object[] { new Guid("ca280668-67c8-47be-b023-89d5b8a96366"), new Guid("46e8d539-effb-4589-92c0-4d6d81c4c1d9") });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Group_GroupName",
+                table: "Group",
+                column: "GroupName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",

@@ -12,7 +12,7 @@ using TriaDemo.Repository.EntityFrameworkCore;
 namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(TriaDemoDbContext))]
-    [Migration("20250310193947_InitialCreate")]
+    [Migration("20250311185206_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,6 +37,9 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupName")
+                        .IsUnique();
 
                     b.ToTable("Group", (string)null);
 
