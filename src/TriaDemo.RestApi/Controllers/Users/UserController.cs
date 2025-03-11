@@ -2,8 +2,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TriaDemo.RestApi.Authentication;
 using TriaDemo.RestApi.Authorization;
-using TriaDemo.RestApi.Users;
 using TriaDemo.Service;
 using TriaDemo.Service.Models;
 

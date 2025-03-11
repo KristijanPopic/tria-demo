@@ -1,6 +1,6 @@
 using TriaDemo.Service.Contracts;
 
-namespace TriaDemo.RestApi.Users;
+namespace TriaDemo.RestApi.Authentication;
 
 public sealed class AnonymousUser : ICurrentUser
 {

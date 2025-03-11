@@ -22,16 +22,15 @@ internal sealed class UserService(
 
     public async Task<bool> DeleteAsync(User user, CancellationToken token = default)
     {
-        if (currentUserService.CurrentUser.UserId == user.Id)
-        {
-            throw new UnauthorizedException("User can not delete himself.");
-        }
-        
         if (!await currentUserService.IsAdmin(token))
         {
             throw new UnauthorizedException("User must be admin to delete other users.");
         }
-        
+        if (currentUserService.CurrentUser.UserId == user.Id)
+        {
+            throw new UnauthorizedException("User can not delete himself.");
+        }
+
         return await userRepository.DeleteAsync(user.Id, token);
     }
 
@@ -58,7 +57,7 @@ internal sealed class UserService(
         }
 
         var groupNames = user.Groups.Select(g => g.GroupName).ToArray();
-        var groups = await groupRepository.GetGroupsAsync(groupNames, token);
+        var groups = await groupRepository.GetAsync(groupNames, token);
         
         if (groups.Count == 0)
         {

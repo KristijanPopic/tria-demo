@@ -1,32 +1,63 @@
 using TriaDemo.Service.Contracts;
+using TriaDemo.Service.Exceptions;
 using TriaDemo.Service.Models;
 
 namespace TriaDemo.Service;
 
-public sealed class GroupService(IGroupRepository groupRepository) : IGroupService
+internal sealed class GroupService(CurrentUserService currentUserService, IGroupRepository groupRepository) : IGroupService
 {
-    public Task<Group> CreateAsync(Group group, CancellationToken cancellationToken = default)
+    public async Task<Group> CreateAsync(Group group, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if (!await currentUserService.IsAdmin(cancellationToken))
+        {
+            throw new UnauthorizedException("User must be admin to create groups.");
+        }
+        
+        var existingGroup = await groupRepository.GetByNameAsync(group.GroupName, cancellationToken);
+        if (existingGroup is not null)
+        {
+            throw new NotUniqueException($"Group with name '{group.GroupName}' already exists.");
+        }
+        return await groupRepository.CreateAsync(group, cancellationToken);
     }
 
-    public Task<bool> DeleteAsync(Group group, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(Group group, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if (!await currentUserService.IsAdmin(cancellationToken))
+        {
+            throw new UnauthorizedException("User must be admin to delete groups.");
+        }
+        if (group.GroupName == Group.GroupAdmin)
+        {
+            throw new UnauthorizedException("Admin group cannot be deleted.");
+        }
+        
+        return await groupRepository.DeleteAsync(group.Id, cancellationToken);
     }
 
-    public Task<Group?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Group?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await groupRepository.GetByIdAsync(id, cancellationToken);
     }
 
-    public Task<IReadOnlyCollection<Group>> GetAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyCollection<Group>> GetAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await groupRepository.GetAsync(cancellationToken);
     }
 
-    public Task<Group> UpdateAsync(Group group, CancellationToken cancellationToken = default)
+    public async Task<Group> UpdateAsync(Group group, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if (!await currentUserService.IsAdmin(cancellationToken))
+        {
+            throw new UnauthorizedException("User must be admin to update groups.");
+        }
+        
+        var existingGroup = await groupRepository.GetByNameAsync(group.GroupName, cancellationToken);
+        if (existingGroup != null && existingGroup.Id != group.Id)
+        {
+            throw new NotUniqueException($"Group with name '{group.GroupName}' already exists.");
+        }
+        
+        return await groupRepository.UpdateAsync(group, cancellationToken);
     }
 }

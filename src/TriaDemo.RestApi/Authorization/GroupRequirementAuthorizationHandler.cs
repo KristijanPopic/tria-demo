@@ -7,9 +7,9 @@ public sealed class GroupRequirementAuthorizationHandler(CurrentUserService curr
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, GroupRequirement requirement)
     {
-        var hasGroup = await currentUserService.IsInGroup(requirement.GroupName);
+        var inGroup = await currentUserService.IsInGroup(requirement.GroupName);
         
-        if (hasGroup)
+        if (inGroup)
         {
             context.Succeed(requirement);
             return;

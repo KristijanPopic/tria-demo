@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TriaDemo.Repository.DependencyInjection;
+using TriaDemo.RestApi.Authentication;
 using TriaDemo.RestApi.Controllers.Groups;
 using TriaDemo.RestApi.Controllers.Users;
 using TriaDemo.RestApi.Options;
-using TriaDemo.RestApi.Users;
 using TriaDemo.Service.Contracts;
 using TriaDemo.Service.DependencyInjection;
 

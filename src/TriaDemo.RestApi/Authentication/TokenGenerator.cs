@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using TriaDemo.RestApi.Options;
 using TriaDemo.Service.Models;
 
-namespace TriaDemo.RestApi.Users;
+namespace TriaDemo.RestApi.Authentication;
 
 public sealed class TokenGenerator(IOptions<JwtTokenOptions> options)
 {

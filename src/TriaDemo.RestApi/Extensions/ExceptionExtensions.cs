@@ -31,6 +31,13 @@ public static class ExceptionExtensions
                 Title = "One or more property values are invalid.",
                 Detail = invalidEntityException.Message
             },
+            NotUniqueException notUniqueException => new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Type = "Conflict",
+                Title = "Value is already in use.",
+                Detail = notUniqueException.Message
+            },
             _ => new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,

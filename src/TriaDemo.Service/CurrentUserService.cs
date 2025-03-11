@@ -5,15 +5,13 @@ namespace TriaDemo.Service;
 
 public sealed class CurrentUserService(ICurrentUser currentUser, IUserRepository userRepository)
 {
-    private const string GroupAdmin = "admin";
-    
     private User? _authenticatedUser;
 
     public ICurrentUser CurrentUser => currentUser;
 
     public async Task<bool> IsAdmin(CancellationToken token = default)
     {
-        return await IsInGroup(GroupAdmin, token);
+        return await IsInGroup(Group.GroupAdmin, token);
     }
 
     public async Task<bool> IsInGroup(string groupName, CancellationToken token = default)

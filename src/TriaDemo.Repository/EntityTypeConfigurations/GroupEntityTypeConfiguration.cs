@@ -16,6 +16,9 @@ public class GroupEntityTypeConfiguration : IEntityTypeConfiguration<Group>
             .IsRequired()
             .HasMaxLength(100);
         
+        builder.HasIndex(p => p.GroupName)
+            .IsUnique();
+        
         builder.HasData(SeedData.Groups);
 
     }
