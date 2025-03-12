@@ -1,22 +1,23 @@
 using TriaDemo.Service.Contracts;
+using TriaDemo.Service.Exceptions;
 using TriaDemo.Service.Models;
 
 namespace TriaDemo.Service;
 
 internal sealed class NotificationsService(
-    INotificationsRepository notificationsRepository,
+    IUserNotificationsRepository userNotificationsRepository,
     IUserRepository userRepository,
     ICurrentUser currentUser) : INotificationsService
 {
-    public async Task<IReadOnlyCollection<UserNotification>> CreateNotificationsAsync(IReadOnlyCollection<UserNotification> notifications)
+    public async Task<IReadOnlyCollection<UserNotification>> CreateNotificationsAsync(IReadOnlyCollection<UserNotification> notifications, CancellationToken cancellationToken)
     {
-        var users = await userRepository.GetUsersByIdAsync(notifications.Select(u => u.UserId));
+        var users = await userRepository.GetByIdAsync(notifications.Select(u => u.UserId), cancellationToken);
         foreach (var userNotification in notifications)
         {
-            var existingUser = users[userNotification.UserId];
+            var userExists = users.TryGetValue(userNotification.UserId, out var existingUser);
             
             // skipping the sender and those that don't exist
-            if (existingUser == null || existingUser.Id == currentUser.UserId)
+            if (!userExists || existingUser!.Id == currentUser.UserId)
             {
                 continue;
             }
@@ -24,9 +25,23 @@ internal sealed class NotificationsService(
             userNotification.User = existingUser;
         }
         
-        var validNotifications = notifications.Where(u => users.ContainsKey(u.UserId));
+        var validNotifications = notifications.Where(u => users.ContainsKey(u.UserId)).ToArray();
         
-        return await notificationsRepository.CreateAsync(validNotifications);
+        return await userNotificationsRepository.CreateAsync(validNotifications);
     }
-    
+
+    public Task<UserNotification?> GetUserNotificationByIdAsync(Guid userNotificationId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<UserNotification> UpdateUserNotificationAsync(UserNotification notification, CancellationToken cancellationToken)
+    {
+        if (currentUser.UserId != notification.UserId)
+        {
+            throw new UnauthorizedException("User can not update status of other user's notification.");
+        }
+        
+        return await userNotificationsRepository.UpdateAsync(notification, cancellationToken);
+    }
 }

@@ -20,17 +20,22 @@ internal sealed class UserRepository(TriaDemoDbContext dbContext) : IUserReposit
         return await _dbSet.Where(u => u.Id == userId).ExecuteDeleteAsync(token) > 0;
     }
 
-    public async Task<User?> GetUserByEmailAsync(string email, CancellationToken token = default)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken token = default)
     {
         return await _dbSet.SingleOrDefaultAsync(u => u.Email == email, token);
     }
 
-    public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken token = default)
+    public async Task<User?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
         return await _dbSet.Include(u => u.Groups).SingleOrDefaultAsync(u => u.Id == id, token);
     }
 
-    public async Task<IReadOnlyCollection<User>> GetUsersAsync(CancellationToken token = default)
+    public async Task<IDictionary<Guid, User>> GetByIdAsync(IEnumerable<Guid> ids, CancellationToken token = default)
+    {
+        return await _dbSet.Include(u => u.Groups).Where(u => ids.Contains(u.Id)).ToDictionaryAsync(u => u.Id, u => u, token);
+    }
+
+    public async Task<IReadOnlyCollection<User>> GetAsync(CancellationToken token = default)
     {
         return await _dbSet.Include(u => u.Groups).ToListAsync(token);
     }

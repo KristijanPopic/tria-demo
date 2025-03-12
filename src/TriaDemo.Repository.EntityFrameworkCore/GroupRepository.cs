@@ -33,7 +33,6 @@ internal sealed class GroupRepository(TriaDemoDbContext dbContext) : IGroupRepos
     public async Task<IReadOnlyCollection<Group>> GetAsync(CancellationToken cancellationToken = default)
     {
         return await _dbSet.ToListAsync(cancellationToken);
-
     }
 
     public async Task<Group?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

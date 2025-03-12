@@ -8,6 +8,7 @@ public class TriaDemoDbContext(DbContextOptions<TriaDemoDbContext> options) : Db
     public DbSet<User> Users { get; init; } = null!;
     public DbSet<Group> Groups { get; init; } = null!;
     public DbSet<UserGroup> UserGroups { get; init; } = null!;
+    public DbSet<UserNotification> UserNotifications { get; init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -29,6 +29,15 @@ public class ApiControllerBase : ControllerBase
             detail: detail, 
             statusCode: StatusCodes.Status401Unauthorized);
     }
+    
+    protected ObjectResult ForbiddenProblem(string detail)
+    {
+        return Problem(
+            type:"Forbidden",
+            title: "User is not authorized to perform this action.",
+            detail: detail, 
+            statusCode: StatusCodes.Status403Forbidden);
+    }
 
     protected ObjectResult NotFoundProblem(string title, string detail)
     {

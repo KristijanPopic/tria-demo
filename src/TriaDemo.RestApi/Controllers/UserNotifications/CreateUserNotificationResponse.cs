@@ -14,7 +14,7 @@ public sealed class CreateUserNotificationResponse
             n => new UserNotificationResponse
             {
                 IsRead = n.IsRead,
-                NotificationId = n.NotificationId,
+                NotificationId = n.Id,
                 UserId = n.UserId
             }
         );

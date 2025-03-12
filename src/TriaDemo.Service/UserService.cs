@@ -36,17 +36,17 @@ internal sealed class UserService(
 
     public async Task<User?> GetByEmailAsync(string email, CancellationToken token = default)
     {
-        return await userRepository.GetUserByEmailAsync(email, token);
+        return await userRepository.GetByEmailAsync(email, token);
     }
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken token = default)
     {
-        return await userRepository.GetUserByIdAsync(id, token);
+        return await userRepository.GetByIdAsync(id, token);
     }
 
     public async Task<IReadOnlyCollection<User>> GetAsync(CancellationToken token = default)
     {
-        return await userRepository.GetUsersAsync(token);
+        return await userRepository.GetAsync(token);
     }
 
     public async Task<User> UpdateAsync(User user, CancellationToken token = default)

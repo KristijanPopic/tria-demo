@@ -68,7 +68,7 @@ public sealed class UserServiceTests
         };
         
         userRepositoryMock
-            .Setup(m => m.GetUserByIdAsync(currentUser.UserId, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetByIdAsync(currentUser.UserId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => authenticatedUser);
 
         var currentUserService = new CurrentUserService(currentUser, userRepositoryMock.Object);

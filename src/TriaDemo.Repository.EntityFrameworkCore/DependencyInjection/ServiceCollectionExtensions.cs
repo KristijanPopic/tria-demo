@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IGroupRepository, GroupRepository>();
+        services.AddScoped<IUserNotificationsRepository, UserNotificationsRepository>();
         
         return services;
     }

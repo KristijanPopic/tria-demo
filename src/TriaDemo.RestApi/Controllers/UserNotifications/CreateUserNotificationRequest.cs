@@ -17,7 +17,7 @@ public sealed class CreateUserNotificationRequest
             DateCreated = DateTime.UtcNow
         };
         
-        return UserIds.Select(
+        return UserIds.Distinct().Select(
             uid => new UserNotification
             {
                 Id = Guid.NewGuid(),

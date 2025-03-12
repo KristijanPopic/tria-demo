@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TriaDemo.Service;
+using TriaDemo.Service.Contracts;
 
 namespace TriaDemo.RestApi.Controllers.UserNotifications;
 
@@ -23,7 +24,7 @@ public class NotificationController(INotificationsService notificationsService) 
         CreateUserNotificationRequest request,
         [FromServices] IValidator<CreateUserNotificationRequest> validator,
         CancellationToken cancellationToken)
-    {
+    { 
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
         {
@@ -32,8 +33,45 @@ public class NotificationController(INotificationsService notificationsService) 
         
         var userNotifications = request.ToUserNotifications();
         
-        var createdUserNotifications = await notificationsService.CreateNotificationsAsync(userNotifications);
+        var createdUserNotifications = await notificationsService.CreateNotificationsAsync(userNotifications, cancellationToken);
         
         return CreateUserNotificationResponse.FromUserNotifications(createdUserNotifications);
+    }
+
+    /// <summary>
+    /// Marks the notification as read or unread.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="userId"></param>
+    /// <param name="notificationId"></param>
+    /// <param name="currentUser"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPut("users/{userId:guid}/notifications/{notificationId:guid}/status")]
+    [ProducesResponseType<UpdateUserNotificationStatusResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<UpdateUserNotificationStatusResponse>> UpdateNotification(
+        UpdateUserNotificationStatusRequest request,
+        Guid userId,
+        Guid notificationId,
+        CancellationToken cancellationToken)
+    {
+        var userNotification = await notificationsService.GetUserNotificationByIdAsync(notificationId, cancellationToken);
+        if (userNotification == null || userNotification.UserId != userId)
+        {
+            return NotFoundProblem("Notification not found", $"User notification id {notificationId} not found");
+        }
+
+        if (userNotification.IsRead == request.IsRead)
+        {
+            return Ok(new UpdateUserNotificationStatusResponse{ IsRead = userNotification.IsRead, NotificationId = notificationId });
+        }
+        
+        userNotification.IsRead = request.IsRead;
+        
+        await notificationsService.UpdateUserNotificationAsync(userNotification, cancellationToken);
+        
+        return Ok(new UpdateUserNotificationStatusResponse{ IsRead = userNotification.IsRead, NotificationId = notificationId });
     }
 }

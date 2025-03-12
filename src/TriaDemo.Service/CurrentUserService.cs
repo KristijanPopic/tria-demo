@@ -21,7 +21,7 @@ public sealed class CurrentUserService(ICurrentUser currentUser, IUserRepository
             return false;
         }
         
-        _authenticatedUser ??= await userRepository.GetUserByIdAsync(currentUser.UserId, token);
+        _authenticatedUser ??= await userRepository.GetByIdAsync(currentUser.UserId, token);
         
         return _authenticatedUser!.Groups.Exists(g => g.GroupName == groupName);
     }
