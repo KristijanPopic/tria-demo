@@ -9,7 +9,7 @@
       - triademo.database
   
   triademo.database:
-    image: postgres:alpine
+    image: postgres:17.4
     restart: always
     shm_size: 128mb
     environment:
