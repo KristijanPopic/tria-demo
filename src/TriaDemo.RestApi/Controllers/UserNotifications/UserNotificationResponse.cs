@@ -1,6 +1,6 @@
 namespace TriaDemo.RestApi.Controllers.UserNotifications;
 
-public class UserNotificationResponse
+public sealed class UserNotificationResponse
 {
     public Guid NotificationId { get; set; }
 

@@ -1,5 +1,6 @@
 using TriaDemo.Service.Contracts;
 using TriaDemo.Service.Exceptions;
+using TriaDemo.Service.Filtering;
 using TriaDemo.Service.Models;
 
 namespace TriaDemo.Service;
@@ -28,6 +29,11 @@ internal sealed class UserNotificationsService(
         var validNotifications = notifications.Where(u => users.ContainsKey(u.UserId)).ToArray();
         
         return await userNotificationsRepository.CreateAsync(validNotifications);
+    }
+
+    public async Task<IReadOnlyCollection<UserNotification>> GetAsync(Guid userId, NotificationFilters filters, CancellationToken cancellationToken)
+    {
+        return await userNotificationsRepository.GetAsync(userId, filters, cancellationToken);
     }
 
     public async Task<UserNotification?> GetByIdAsync(Guid userNotificationId, CancellationToken cancellationToken)
