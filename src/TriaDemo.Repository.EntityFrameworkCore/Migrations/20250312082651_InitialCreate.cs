@@ -26,6 +26,19 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Message = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -59,6 +72,32 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserGroup_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserNotification",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    NotificationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsRead = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotification", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserNotification_Notification_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notification",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserNotification_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -100,6 +139,17 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                 name: "IX_UserGroup_UserId",
                 table: "UserGroup",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNotification_NotificationId_UserId",
+                table: "UserNotification",
+                columns: new[] { "NotificationId", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNotification_UserId",
+                table: "UserNotification",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -109,7 +159,13 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                 name: "UserGroup");
 
             migrationBuilder.DropTable(
+                name: "UserNotification");
+
+            migrationBuilder.DropTable(
                 name: "Group");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "User");

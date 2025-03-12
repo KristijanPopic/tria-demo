@@ -4,7 +4,7 @@ using TriaDemo.Service.Models;
 
 namespace TriaDemo.Repository.EntityFrameworkCore.EntityTypeConfigurations;
 
-public class GroupEntityTypeConfiguration : IEntityTypeConfiguration<Group>
+internal class GroupEntityTypeConfiguration : IEntityTypeConfiguration<Group>
 {
     public void Configure(EntityTypeBuilder<Group> builder)
     {

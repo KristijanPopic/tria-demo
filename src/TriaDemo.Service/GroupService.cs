@@ -53,11 +53,14 @@ internal sealed class GroupService(CurrentUserService currentUserService, IGroup
         }
         
         var existingGroup = await groupRepository.GetByNameAsync(group.GroupName, cancellationToken);
-        if (existingGroup != null && existingGroup.Id != group.Id)
+        
+        if (existingGroup == null) return await groupRepository.UpdateAsync(group, cancellationToken);
+        
+        if (existingGroup.Id != group.Id)
         {
             throw new NotUniqueException($"Group with name '{group.GroupName}' already exists.");
         }
-        
-        return await groupRepository.UpdateAsync(group, cancellationToken);
+
+        return group;
     }
 }

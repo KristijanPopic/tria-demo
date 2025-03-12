@@ -53,6 +53,25 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TriaDemo.Service.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
             modelBuilder.Entity("TriaDemo.Service.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -123,6 +142,31 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TriaDemo.Service.Models.UserNotification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("NotificationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("NotificationId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserNotification", (string)null);
+                });
+
             modelBuilder.Entity("TriaDemo.Service.Models.UserGroup", b =>
                 {
                     b.HasOne("TriaDemo.Service.Models.Group", "Group")
@@ -138,6 +182,25 @@ namespace TriaDemo.Repository.EntityFrameworkCore.Migrations
                         .IsRequired();
 
                     b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TriaDemo.Service.Models.UserNotification", b =>
+                {
+                    b.HasOne("TriaDemo.Service.Models.Notification", "Notification")
+                        .WithMany()
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TriaDemo.Service.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
 
                     b.Navigation("User");
                 });
