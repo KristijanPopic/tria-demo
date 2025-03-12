@@ -1,6 +1,6 @@
 namespace TriaDemo.Service.Filtering;
 
-public class NotificationFilters
+public sealed class NotificationFilters
 {
     public DateTime? StartDate { get; set; }
 

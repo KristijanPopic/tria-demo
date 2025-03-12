@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TriaDemo.RestApi.Extensions;
 using TriaDemo.Service;
 using TriaDemo.Service.Filtering;
 
@@ -60,8 +61,8 @@ public class NotificationController(IUserNotificationsService userNotificationsS
     {
         var filters = new NotificationFilters
         {
-            StartDate = startDate,
-            EndDate = endDate,
+            StartDate = startDate.ToUtcDateTimeOrNull(),
+            EndDate = endDate.ToUtcDateTimeOrNull(),
             IsRead = isRead
         };
 
