@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using TriaDemo.Repository.EntityFrameworkCore.DependencyInjection;
 using TriaDemo.RestApi.Authentication;
 using TriaDemo.RestApi.Controllers.Groups;
+using TriaDemo.RestApi.Controllers.UserNotifications;
 using TriaDemo.RestApi.Controllers.Users;
 using TriaDemo.RestApi.Options;
 using TriaDemo.Service.Contracts;
@@ -105,6 +106,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
         services.AddSingleton<IValidator<CreateGroupRequest>, CreateGroupRequestValidator>();
         services.AddSingleton<IValidator<UpdateGroupRequest>, UpdateGroupRequestValidator>();
+        services.AddSingleton<IValidator<CreateUserNotificationRequest>, CreateUserNotificationRequestValidator>();
         
         return services;
     }
