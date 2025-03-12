@@ -4,12 +4,12 @@ using TriaDemo.Service.Models;
 
 namespace TriaDemo.Service;
 
-internal sealed class NotificationsService(
+internal sealed class UserNotificationsService(
     IUserNotificationsRepository userNotificationsRepository,
     IUserRepository userRepository,
-    ICurrentUser currentUser) : INotificationsService
+    ICurrentUser currentUser) : IUserNotificationsService
 {
-    public async Task<IReadOnlyCollection<UserNotification>> CreateNotificationsAsync(IReadOnlyCollection<UserNotification> notifications, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<UserNotification>> CreateAsync(IReadOnlyCollection<UserNotification> notifications, CancellationToken cancellationToken)
     {
         var users = await userRepository.GetByIdAsync(notifications.Select(u => u.UserId), cancellationToken);
         foreach (var userNotification in notifications)
@@ -30,12 +30,12 @@ internal sealed class NotificationsService(
         return await userNotificationsRepository.CreateAsync(validNotifications);
     }
 
-    public Task<UserNotification?> GetUserNotificationByIdAsync(Guid userNotificationId, CancellationToken cancellationToken)
+    public async Task<UserNotification?> GetByIdAsync(Guid userNotificationId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await userNotificationsRepository.GetByIdAsync(userNotificationId, cancellationToken);
     }
 
-    public async Task<UserNotification> UpdateUserNotificationAsync(UserNotification notification, CancellationToken cancellationToken)
+    public async Task<UserNotification> UpdateAsync(UserNotification notification, CancellationToken cancellationToken)
     {
         if (currentUser.UserId != notification.UserId)
         {

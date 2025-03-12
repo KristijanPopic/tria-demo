@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IGroupService, GroupService>();
-        services.AddScoped<INotificationsService, NotificationsService>();
+        services.AddScoped<IUserNotificationsService, UserNotificationsService>();
         services.AddScoped<CurrentUserService>();
         
         return services;

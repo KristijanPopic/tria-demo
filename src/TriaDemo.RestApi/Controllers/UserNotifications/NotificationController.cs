@@ -2,13 +2,12 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TriaDemo.Service;
-using TriaDemo.Service.Contracts;
 
 namespace TriaDemo.RestApi.Controllers.UserNotifications;
 
 [Route("api")]
 [Authorize]
-public class NotificationController(INotificationsService notificationsService) : ApiControllerBase
+public class NotificationController(IUserNotificationsService userNotificationsService) : ApiControllerBase
 {
     /// <summary>
     /// Creates a notification for a user.
@@ -33,7 +32,7 @@ public class NotificationController(INotificationsService notificationsService) 
         
         var userNotifications = request.ToUserNotifications();
         
-        var createdUserNotifications = await notificationsService.CreateNotificationsAsync(userNotifications, cancellationToken);
+        var createdUserNotifications = await userNotificationsService.CreateAsync(userNotifications, cancellationToken);
         
         return CreateUserNotificationResponse.FromUserNotifications(createdUserNotifications);
     }
@@ -44,7 +43,6 @@ public class NotificationController(INotificationsService notificationsService) 
     /// <param name="request"></param>
     /// <param name="userId"></param>
     /// <param name="notificationId"></param>
-    /// <param name="currentUser"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut("users/{userId:guid}/notifications/{notificationId:guid}/status")]
@@ -57,7 +55,7 @@ public class NotificationController(INotificationsService notificationsService) 
         Guid notificationId,
         CancellationToken cancellationToken)
     {
-        var userNotification = await notificationsService.GetUserNotificationByIdAsync(notificationId, cancellationToken);
+        var userNotification = await userNotificationsService.GetByIdAsync(notificationId, cancellationToken);
         if (userNotification == null || userNotification.UserId != userId)
         {
             return NotFoundProblem("Notification not found", $"User notification id {notificationId} not found");
@@ -70,7 +68,7 @@ public class NotificationController(INotificationsService notificationsService) 
         
         userNotification.IsRead = request.IsRead;
         
-        await notificationsService.UpdateUserNotificationAsync(userNotification, cancellationToken);
+        await userNotificationsService.UpdateAsync(userNotification, cancellationToken);
         
         return Ok(new UpdateUserNotificationStatusResponse{ IsRead = userNotification.IsRead, NotificationId = notificationId });
     }

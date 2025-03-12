@@ -15,6 +15,11 @@ internal sealed class UserNotificationsRepository(TriaDemoDbContext dbContext) :
         return userNotifications;
     }
 
+    public async Task<UserNotification?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await _dbSet.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+    }
+
     public async Task<UserNotification> UpdateAsync(UserNotification userNotification, CancellationToken cancellationToken)
     {
         var entry = _dbSet.Entry(userNotification);
