@@ -8,7 +8,7 @@
 ### Setup
 
 1. clone project, checkout `main` branch
-2. in the root folder, run `docker compose up -d`. It needs ports 5000 (for the app) and port 5432 (for PostgreSQL) so make sure those ports are not already occupied. If the ports are already occupied, change them in `compose.yaml` according to your needs before running the command.
+2. in the `src` folder, run `docker compose up -d`. It needs ports 5000 (for the app) and port 5432 (for PostgreSQL) so make sure those ports are not already occupied. If the ports are already occupied, change them in `compose.yaml` according to your needs before running the command.
 3. open `http://localhost:5000/swagger` in your browser and there you can execute requests. Alternatively, you can use Postman or cURL or anything else.
 4. There is a default admin user already in the database: Username: `josh.doe@gmail.com`, Password: `admin123!`. You can login using `/api/users/login` endpoint.
 
