@@ -29,7 +29,7 @@ internal sealed class GroupService(CurrentUserService currentUserService, IGroup
         }
         if (group.GroupName is Group.GroupAdmin or Group.GroupRegular)
         {
-            throw new UnauthorizedException("Groups 'admin' and 'reader' are default and cannot be deleted.");
+            throw new UnauthorizedException("Groups 'admin' and 'regular' are default and cannot be deleted.");
         }
         
         return await groupRepository.DeleteAsync(group.Id, cancellationToken);
